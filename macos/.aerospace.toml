@@ -1,0 +1,134 @@
+# Iniciar AeroSpace al iniciar sesión
+start-at-login = true
+
+# --- JankyBorders (Paleta Obsidian) ---
+after-startup-command = ['exec-and-forget /opt/homebrew/bin/borders active_color=0xffd4d4d4,0xffffffff inactive_color=0xff080808 width=4.0 radius=0']
+
+# Notificar a Sketchybar sobre el cambio de espacio de trabajo
+exec-on-workspace-change = ['/bin/bash', '-c',
+    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+]
+
+# Normalizaciones para ventanas anidadas
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+# Ajustado para la pantalla de tu MacBook (300 era demasiado)
+accordion-padding = 30
+
+# Disposición por defecto
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+# Evitar conflictos con la función de ocultar de macOS
+automatically-unhide-macos-hidden-apps = false
+
+on-focus-changed = ['move-mouse window-force-center', 'exec-and-forget sketchybar --trigger window_focus']
+
+# --- Reglas para ventanas flotantes ---
+[[on-window-detected]]
+if.app-name-regex-substring = 'finder'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'safari'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'discord'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'mail'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'quicktime'
+run = 'layout floating'
+
+# --- Configuración de teclado ---
+[key-mapping]
+preset = 'qwerty'
+
+# --- Márgenes (gaps) ---
+[gaps]
+inner.horizontal = 5
+inner.vertical =   5
+outer.left =       6 # Aumentado a 6 para acomodar el borde de 4.0 y esquinas curvas
+outer.right =      6
+outer.bottom =     6
+outer.top =        6
+
+# --- Atajos Principales ---
+[mode.main.binding]
+
+alt-ctrl-shift-f = 'fullscreen'
+alt-ctrl-f = 'layout floating tiling'
+
+alt-shift-left = 'join-with left'
+alt-shift-down = 'join-with down'
+alt-shift-up = 'join-with up'
+alt-shift-right = 'join-with right'
+
+alt-slash = 'layout tiles horizontal vertical'
+alt-comma = 'layout accordion horizontal vertical'
+
+# Foco de ventanas (Navegación tipo Vim)
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+
+# Mover ventanas de posición
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+
+# Redimensionar ventanas
+alt-shift-minus = 'resize smart -50'
+alt-shift-equal = 'resize smart +50'
+alt-ctrl-left = 'resize width -40'
+alt-ctrl-right = 'resize width +40'
+alt-ctrl-up = 'resize height -40'
+alt-ctrl-down = 'resize height +40'
+
+# Cambiar entre espacios de trabajo (Workspaces)
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
+alt-7 = 'workspace 7'
+alt-8 = 'workspace 8'
+
+# Mover la ventana activa a otro espacio de trabajo
+alt-shift-1 = 'move-node-to-workspace 1 --focus-follows-window'
+alt-shift-2 = 'move-node-to-workspace 2 --focus-follows-window'
+alt-shift-3 = 'move-node-to-workspace 3 --focus-follows-window'
+alt-shift-4 = 'move-node-to-workspace 4 --focus-follows-window'
+alt-shift-5 = 'move-node-to-workspace 5 --focus-follows-window'
+alt-shift-6 = 'move-node-to-workspace 6 --focus-follows-window'
+alt-shift-7 = 'move-node-to-workspace 7 --focus-follows-window'
+alt-shift-8 = 'move-node-to-workspace 8 --focus-follows-window'
+
+# Volver al espacio de trabajo anterior
+alt-tab = 'workspace-back-and-forth'
+
+# Lanzadores de aplicaciones
+alt-e = 'exec-and-forget open -a /System/Library/CoreServices/Finder.app'
+alt-w = 'exec-and-forget open -a "Brave Browser"'
+alt-t = 'exec-and-forget open -n -a kitty'
+
+# Modo de servicio (Gestión del gestor)
+# Encendemos el [S] al mismo tiempo que entramos al modo servicio
+alt-shift-semicolon = ['mode service', 'exec-and-forget sketchybar --set aerospace_mode drawing=on']
+
+# --- Modo Servicio ---
+[mode.service.binding]
+# Apagamos el [S] al mismo tiempo que volvemos al modo main en cualquiera de las opciones
+esc = ['reload-config', 'mode main', 'exec-and-forget sketchybar --set aerospace_mode drawing=off']
+r = ['flatten-workspace-tree', 'mode main', 'exec-and-forget sketchybar --set aerospace_mode drawing=off'] 
+f = ['layout floating tiling', 'mode main', 'exec-and-forget sketchybar --set aerospace_mode drawing=off'] 
+backspace = ['close-all-windows-but-current', 'mode main', 'exec-and-forget sketchybar --set aerospace_mode drawing=off']
