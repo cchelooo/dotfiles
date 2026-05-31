@@ -1,11 +1,8 @@
 #!/bin/bash
 
-# --- Directorio de Plugins ---
 PLUGIN_DIR="$CONFIG_DIR/plugins"
+MAX_APPS=4
 
-# --- Configuración General de la Barra ---
-# color=0x00000000 la hace 100% transparente en el centro (esconde el notch)
-# padding_left y padding_right a 6px alinea los bloques con tus gaps de AeroSpace
 sketchybar --bar position=top \
                  height=28 \
                  blur_radius=0 \
@@ -15,7 +12,6 @@ sketchybar --bar position=top \
                  border_width=0 \
                  shadow=off
 
-# --- Valores por Defecto ---
 default=(
   padding_left=2
   padding_right=2
@@ -32,11 +28,9 @@ default=(
 )
 sketchybar --default "${default[@]}"
 
-# --- Eventos ---
 sketchybar --add event aerospace_workspace_change
 sketchybar --add event window_focus
 
-# --- IZQUIERDA 0: Modo Servicio ---
 sketchybar --add item aerospace_mode left \
            --set aerospace_mode label="[S]" \
                                 icon.drawing=off \
@@ -45,48 +39,53 @@ sketchybar --add item aerospace_mode left \
                                 padding_right=10 \
                                 drawing=off
 
-# --- IZQUIERDA 1: Workspaces (1 al 4) ---
 for sid in 1 2 3 4; do
   sketchybar --add item workspace.$sid left \
-             --subscribe workspace.$sid aerospace_workspace_change \
+             --subscribe workspace.$sid aerospace_workspace_change window_focus front_app_switched \
              --set workspace.$sid \
                    icon="$sid" \
                    label.drawing=off \
                    icon.padding_left=4 \
-                   icon.padding_right=4 \
+                   icon.padding_right=2 \
                    padding_left=2 \
-                   padding_right=2 \
+                   padding_right=0 \
                    background.drawing=off \
+                   update_freq=2 \
                    click_script="aerospace workspace $sid" \
-                   script="
-                     FOCUSED=\$(aerospace list-workspaces --focused 2>/dev/null)
-                     if [ \"\$FOCUSED\" = \"$sid\" ]; then
-                       sketchybar --set workspace.$sid icon.color=0xffffffff
-                     else
-                       sketchybar --set workspace.$sid icon.color=0xff666666
-                     fi
-                   "
+                   script="$PLUGIN_DIR/workspace_apps.sh"
+
+  for slot in $(seq 1 $MAX_APPS); do
+    sketchybar --add item workspace.$sid.app.$slot left \
+               --set workspace.$sid.app.$slot \
+                     icon.drawing=on \
+                     icon.font="sketchybar-app-font:Regular:14.0" \
+                     icon.y_offset=-2 \
+                     icon.padding_left=1 \
+                     icon.padding_right=1 \
+                     label.drawing=off \
+                     padding_left=0 \
+                     padding_right=0 \
+                     background.drawing=off \
+                     drawing=off \
+                     click_script="aerospace workspace $sid"
+  done
 done
 
-# --- IZQUIERDA 2: Reloj ---
 sketchybar --add item clock left \
            --set clock update_freq=10 \
                        icon.drawing=off \
                        padding_left=15 \
                        script="sketchybar --set \$NAME label=\"\$(date '+%H:%M')\""
 
-# --- DERECHA 1: Batería ---
 sketchybar --add item battery right \
            --set battery update_freq=120 \
                          script="$PLUGIN_DIR/battery.sh" \
            --subscribe battery system_woke power_source_change
 
-# --- DERECHA 2: Volumen ---
 sketchybar --add item volume right \
            --set volume script="$PLUGIN_DIR/volume.sh" \
            --subscribe volume volume_change
 
-# --- DERECHA 3: Título de la Ventana ---
 sketchybar --add item window_title right \
            --set window_title icon.drawing=off \
                               label.color=0xff8d8d8d \
@@ -108,17 +107,20 @@ sketchybar --add item window_title right \
                               " \
            --subscribe window_title window_focus front_app_switched aerospace_workspace_change
 
-# --- AGRUPACIÓN EN BLOQUES (BRACKETS) ---
-# Envolvemos los elementos izquierdos en un fondo transparente y redondeado
-sketchybar --add bracket left_block aerospace_mode workspace.1 workspace.2 workspace.3 workspace.4 clock \
-           --set left_block background.color=0x00000000 \
-                            background.height=26 \
-                            background.corner_radius=15 \
-                            background.blur=true \
-                            background.padding_left=10 \
-                            background.padding_right=10
+sketchybar --add bracket left_block \
+  aerospace_mode \
+  workspace.1 workspace.1.app.1 workspace.1.app.2 workspace.1.app.3 workspace.1.app.4 \
+  workspace.2 workspace.2.app.1 workspace.2.app.2 workspace.2.app.3 workspace.2.app.4 \
+  workspace.3 workspace.3.app.1 workspace.3.app.2 workspace.3.app.3 workspace.3.app.4 \
+  workspace.4 workspace.4.app.1 workspace.4.app.2 workspace.4.app.3 workspace.4.app.4 \
+  clock \
+  --set left_block background.color=0x00000000 \
+                   background.height=26 \
+                   background.corner_radius=15 \
+                   background.blur=true \
+                   background.padding_left=10 \
+                   background.padding_right=10
 
-# Envolvemos los elementos derechos en su propio fondo transparente y redondeado
 sketchybar --add bracket right_block window_title volume battery \
            --set right_block background.color=0x00000000 \
                              background.height=26 \

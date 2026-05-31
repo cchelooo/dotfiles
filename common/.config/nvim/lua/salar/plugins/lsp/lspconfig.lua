@@ -149,11 +149,6 @@ return {
 				"--clang-tidy",
 				"--query-driver=/usr/bin/c++,/usr/bin/g++",
 			},
-			init_options = {
-				fallbackFlags = {
-					"-std=c++20",
-				},
-			},
 		})
 		vim.lsp.enable("clangd")
 

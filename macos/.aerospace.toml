@@ -2,7 +2,7 @@
 start-at-login = true
 
 # --- JankyBorders (Paleta Obsidian) ---
-after-startup-command = ['exec-and-forget /opt/homebrew/bin/borders active_color=0xffd4d4d4,0xffffffff inactive_color=0xff080808 width=4.0 radius=0']
+after-startup-command = ['exec-and-forget /opt/homebrew/bin/borders style=round hidpi=on active_color=0xffffffff inactive_color=0xff0a0a0a width=4.0']
 
 # Notificar a Sketchybar sobre el cambio de espacio de trabajo
 exec-on-workspace-change = ['/bin/bash', '-c',
@@ -65,10 +65,10 @@ outer.top =        6
 alt-ctrl-shift-f = 'fullscreen'
 alt-ctrl-f = 'layout floating tiling'
 
-alt-shift-left = 'join-with left'
-alt-shift-down = 'join-with down'
-alt-shift-up = 'join-with up'
-alt-shift-right = 'join-with right'
+# alt-shift-left = 'join-with left'
+# alt-shift-down = 'join-with down'
+# alt-shift-up = 'join-with up'
+# alt-shift-right = 'join-with right'
 
 alt-slash = 'layout tiles horizontal vertical'
 alt-comma = 'layout accordion horizontal vertical'
