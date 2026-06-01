@@ -1,0 +1,8 @@
+width=450
+height=250
+location=center
+show=drun
+prompt=drun
+allow_images=true
+image_size=16
+columns=2
