@@ -21,6 +21,7 @@ return {
       highlight = {
         enable = true,
         disable = disable_markdown and { "markdown", "markdown_inline" } or {},
+        additional_vim_regex_highlighting = { "python" },
       },
       -- Treesitter indent can override normal `o`/`O` newline indent behavior.
       indent = { enable = false },
@@ -38,6 +39,7 @@ return {
         "html",
         "css",
         "prisma",
+        "python",
         "markdown",
         "markdown_inline",
         "svelte",
