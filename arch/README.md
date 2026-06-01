@@ -11,7 +11,7 @@ Shared configs such as Kitty and Neovim live in `../common` and can be copied or
 - Hyprland compositor config and helper scripts.
 - Waybar layout, modules, and styling.
 - Rofi, Wofi, and Fuzzel launchers.
-- Alacritty, Cava, Waypaper, fontconfig, xsettingsd, and GTK theme settings.
+- Alacritty, Cava, Waypaper, fontconfig, xsettingsd, Zed, and GTK theme settings.
 
 ## Apply locally
 
@@ -20,6 +20,7 @@ From the repository root, copy or symlink the selected files into `$HOME` while 
 ```sh
 cp -r common/.config/kitty ~/.config/
 cp -r common/.config/nvim ~/.config/
+cp -r common/.config/zed ~/.config/
 cp -r arch/.config/hypr ~/.config/
 cp -r arch/.config/waybar ~/.config/
 ```
