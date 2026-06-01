@@ -78,17 +78,21 @@ return {
 
         local lldb_dap = vim.fn.exepath("lldb-dap")
         local codelldb = vim.fn.exepath("codelldb")
+        local gdb = vim.fn.exepath("gdb")
+        local cpp_adapter = nil
 
         -----------------------------------------------------------------------
         -- Adapter setup
         -----------------------------------------------------------------------
         if lldb_dap ~= "" then
+            cpp_adapter = "lldb"
             dap.adapters.lldb = {
                 type = "executable",
                 command = lldb_dap,
                 name = "lldb",
             }
         elseif codelldb ~= "" then
+            cpp_adapter = "lldb"
             dap.adapters.lldb = {
                 type = "server",
                 port = "${port}",
@@ -97,11 +101,13 @@ return {
                     args = { "--port", "${port}" },
                 },
             }
-        else
-            vim.notify(
-                "No C/C++ DAP adapter found. Install `lldb-dap` or `codelldb`.",
-                vim.log.levels.WARN
-            )
+        elseif gdb ~= "" then
+            cpp_adapter = "gdb"
+            dap.adapters.gdb = {
+                type = "executable",
+                command = gdb,
+                args = { "-i", "dap" },
+            }
         end
 
         -----------------------------------------------------------------------
@@ -110,7 +116,7 @@ return {
         local cpp_configurations = {
             {
                 name = "Launch",
-                type = "lldb",
+                type = cpp_adapter,
                 request = "launch",
                 program = pick_cpp_binary,
                 cwd = "${workspaceFolder}",
@@ -118,7 +124,7 @@ return {
             },
             {
                 name = "Launch with args",
-                type = "lldb",
+                type = cpp_adapter,
                 request = "launch",
                 program = pick_cpp_binary,
                 args = prompt_args,
@@ -127,16 +133,18 @@ return {
             },
             {
                 name = "Attach to process",
-                type = "lldb",
+                type = cpp_adapter,
                 request = "attach",
                 pid = require("dap.utils").pick_process,
                 cwd = "${workspaceFolder}",
             },
         }
 
-        dap.configurations.cpp = cpp_configurations
-        dap.configurations.c = cpp_configurations
-        dap.configurations.rust = cpp_configurations
+        if cpp_adapter then
+            dap.configurations.cpp = cpp_configurations
+            dap.configurations.c = cpp_configurations
+            dap.configurations.rust = cpp_configurations
+        end
 
         -----------------------------------------------------------------------
         -- Keybindings
