@@ -1,0 +1,10 @@
+/* Waybar custom modules adapted for this machine. */
+
+{
+"custom/power": {
+	"format": "⏻",
+	"tooltip": true,
+	"tooltip-format": "Power menu not installed. Install wlogout if you want this button to open a power menu.",
+	"on-click": "sh -c 'command -v wlogout >/dev/null && wlogout || notify-send \"Waybar\" \"wlogout is not installed\"'"
+}
+}
