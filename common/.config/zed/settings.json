@@ -57,7 +57,7 @@
     "diagnostics": false,
   },
   "cursor_blink": true,
-  "relative_line_numbers": true,
+  "relative_line_numbers": "enabled",
   "scrollbar": {
     "show": "never",
   },
