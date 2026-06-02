@@ -2,13 +2,15 @@
 
 MAX_APPS=4
 sid="${NAME#workspace.}"
+active_color="0xffffffff"
+inactive_color="0x9ee7edf5"
 
 focused="$(aerospace list-workspaces --focused 2>/dev/null)"
 
 if [ "$focused" = "$sid" ]; then
-  color="0xffffffff"
+  color="$active_color"
 else
-  color="0xff666666"
+  color="$inactive_color"
 fi
 
 sketchybar --set "workspace.$sid" icon.color="$color"
