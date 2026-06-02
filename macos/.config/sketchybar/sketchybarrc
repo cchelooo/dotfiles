@@ -80,7 +80,18 @@ for sid in 1 2 3 4; do
   done
 done
 
-sketchybar --add item clock center \
+sketchybar --add item front_app_icon left \
+           --subscribe front_app_icon front_app_switched window_focus aerospace_workspace_change \
+           --set front_app_icon \
+                 icon.drawing=on \
+                 icon.font="sketchybar-app-font:Regular:16.0" \
+                 icon.padding_left=8 \
+                 icon.padding_right=8 \
+                 label.drawing=off \
+                 background.drawing=off \
+                 script="$PLUGIN_DIR/front_app.sh"
+
+sketchybar --add item clock right \
            --set clock update_freq=10 \
                        icon.drawing=off \
                        label.color=$TEXT_STRONG \
@@ -129,6 +140,7 @@ sketchybar --add bracket left_block \
   workspace.2 workspace.2.app.1 workspace.2.app.2 workspace.2.app.3 workspace.2.app.4 \
   workspace.3 workspace.3.app.1 workspace.3.app.2 workspace.3.app.3 workspace.3.app.4 \
   workspace.4 workspace.4.app.1 workspace.4.app.2 workspace.4.app.3 workspace.4.app.4 \
+  front_app_icon \
   --set left_block background.color=$TRANSPARENT \
                    background.height=28 \
                    background.corner_radius=0 \
@@ -136,15 +148,7 @@ sketchybar --add bracket left_block \
                    background.padding_left=0 \
                    background.padding_right=0
 
-sketchybar --add bracket center_block clock \
-           --set center_block background.color=$TRANSPARENT \
-                              background.height=28 \
-                              background.corner_radius=0 \
-                              background.blur=false \
-                              background.padding_left=0 \
-                              background.padding_right=0
-
-sketchybar --add bracket right_block window_title volume battery \
+sketchybar --add bracket right_block window_title volume battery clock \
            --set right_block background.color=$TRANSPARENT \
                              background.height=28 \
                              background.corner_radius=0 \
