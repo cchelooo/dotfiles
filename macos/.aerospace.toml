@@ -2,7 +2,7 @@
 start-at-login = true
 
 # --- JankyBorders (Paleta Obsidian) ---
-after-startup-command = ['exec-and-forget /opt/homebrew/bin/borders style=round hidpi=on active_color=0xffffffff inactive_color=0xff0a0a0a width=4.0']
+after-startup-command = ['exec-and-forget /opt/homebrew/bin/borders style=square hidpi=on active_color=0xff18181b inactive_color=0xff18181b width=4.0']
 
 # Notificar a Sketchybar sobre el cambio de espacio de trabajo
 exec-on-workspace-change = ['/bin/bash', '-c',
@@ -54,10 +54,10 @@ preset = 'qwerty'
 [gaps]
 inner.horizontal = 5
 inner.vertical =   5
-outer.left =       6 # Aumentado a 6 para acomodar el borde de 4.0 y esquinas curvas
-outer.right =      6
-outer.bottom =     6
-outer.top =        6
+outer.left =       0
+outer.right =      0
+outer.bottom =     0
+outer.top =        0
 
 # --- Atajos Principales ---
 [mode.main.binding]
@@ -118,7 +118,7 @@ alt-tab = 'workspace-back-and-forth'
 
 # Lanzadores de aplicaciones
 alt-e = 'exec-and-forget open -a /System/Library/CoreServices/Finder.app'
-alt-w = 'exec-and-forget open -a "Brave Browser"'
+alt-w = "exec-and-forget sh -c 'sleep 0.1 && open -a Zen'"
 alt-t = 'exec-and-forget open -n -a kitty'
 
 # Modo de servicio (Gestión del gestor)

@@ -13,49 +13,16 @@ TEXT_DIM=0x9ee5e7eb
 BORDER=0xff3f3f42
 TRANSPARENT=0x00000000
 
-# w/ border
-# sketchybar --bar position=top \
-#                  height=36 \
-#                  blur_radius=0 \
-#                  color=$BACKGROUND \
-#                  padding_left=14 \
-#                  padding_right=14 \
-#                  border_width=1 \
-#                  border_color=$BORDER \
-#                  shadow=off
-
-# w/o border
 sketchybar --bar position=top \
-                 height=36 \
+                 height=42 \
+                 topmost=on \
                  blur_radius=0 \
                  color=$BACKGROUND \
                  padding_left=14 \
                  padding_right=14 \
-                 border_width=0 \
+                 border_width=1 \
                  border_color=$BORDER \
                  shadow=off
-
-DISPLAY_WIDTH="$(
-  sketchybar --query displays \
-    | awk -F: '/"w"/ { gsub(/[^0-9.]/, "", $2); print int($2); exit }'
-)"
-DISPLAY_WIDTH="${DISPLAY_WIDTH:-1470}"
-HALF_DISPLAY_WIDTH=$((DISPLAY_WIDTH / 2))
-
-sketchybar --add item bottom_border center \
-           --set bottom_border \
-                 width=0 \
-                 padding_left=$HALF_DISPLAY_WIDTH \
-                 padding_right=$HALF_DISPLAY_WIDTH \
-                 icon.drawing=off \
-                 label.drawing=off \
-                 background.drawing=on \
-                 background.color=$BORDER \
-                 background.height=1 \
-                 background.corner_radius=0 \
-                 background.padding_left=$HALF_DISPLAY_WIDTH \
-                 background.padding_right=$HALF_DISPLAY_WIDTH \
-                 y_offset=-17
 
 default=(
   padding_left=3
@@ -68,8 +35,8 @@ default=(
   icon.padding_right=3
   label.padding_left=4
   label.padding_right=4
-  label.y_offset=2
-  icon.y_offset=2
+  label.y_offset=0
+  icon.y_offset=0
   background.drawing=off
 )
 sketchybar --default "${default[@]}"
@@ -81,20 +48,11 @@ separator=(
   icon="|"
   icon.color=$TEXT_MUTED
   icon.font="JetBrainsMono Nerd Font Mono:Bold:12.0"
-  icon.padding_left=5
-  icon.padding_right=5
+  icon.padding_left=7
+  icon.padding_right=7
   label.drawing=off
   background.drawing=off
 )
-
-sketchybar --add item aerospace_mode left \
-           --set aerospace_mode label="[S]" \
-                                icon.drawing=off \
-                                label.font="JetBrainsMono Nerd Font Mono:Bold:12.0" \
-                                label.color=$TEXT \
-                                label.padding_left=4 \
-                                label.padding_right=8 \
-                                drawing=off
 
 for sid in 1 2 3 4; do
   sketchybar --add item workspace.$sid left \
@@ -104,8 +62,8 @@ for sid in 1 2 3 4; do
                    label.drawing=off \
                    icon.font="JetBrainsMono Nerd Font Mono:Bold:12.0" \
                    icon.color=$TEXT_DIM \
-                   icon.padding_left=5 \
-                   icon.padding_right=5 \
+                   icon.padding_left=12 \
+                   icon.padding_right=12 \
                    padding_left=0 \
                    padding_right=0 \
                    background.drawing=off \
@@ -148,19 +106,6 @@ sketchybar --add item front_app left \
                  " \
            --subscribe front_app front_app_switched window_focus aerospace_workspace_change
 
-sketchybar --add item battery right \
-           --set battery update_freq=120 \
-                         icon.drawing=off \
-                         label.color=$TEXT \
-                         label.font="JetBrainsMono Nerd Font Mono:Bold:12.0" \
-                         label.padding_left=8 \
-                         label.padding_right=10 \
-                         script="$PLUGIN_DIR/battery.sh" \
-           --subscribe battery system_woke power_source_change
-
-sketchybar --add item separator.battery right \
-           --set separator.battery "${separator[@]}"
-
 sketchybar --add item clock right \
            --set clock update_freq=10 \
                        icon.drawing=off \
@@ -173,6 +118,18 @@ sketchybar --add item clock right \
 sketchybar --add item separator.clock right \
            --set separator.clock "${separator[@]}"
 
+sketchybar --add item battery right \
+           --set battery update_freq=120 \
+                         icon.color=$TEXT \
+                         label.color=$TEXT \
+                         icon.font="JetBrainsMono Nerd Font:Bold:13.0" \
+                         label.font="JetBrainsMono Nerd Font Mono:Bold:12.0" \
+                         script="$PLUGIN_DIR/battery.sh" \
+           --subscribe battery system_woke power_source_change
+
+sketchybar --add item separator.battery right \
+           --set separator.battery "${separator[@]}"
+
 sketchybar --add item volume right \
            --set volume icon.color=$TEXT \
                         label.color=$TEXT \
@@ -182,7 +139,7 @@ sketchybar --add item volume right \
            --subscribe volume volume_change
 
 sketchybar --add bracket left_block \
-  aerospace_mode workspace.1 workspace.2 workspace.3 workspace.4 \
+  workspace.1 workspace.2 workspace.3 workspace.4 \
   separator.front_app front_app \
   --set left_block background.drawing=off \
                    background.height=34 \
@@ -190,7 +147,7 @@ sketchybar --add bracket left_block \
                    background.padding_left=0 \
                    background.padding_right=0
 
-sketchybar --add bracket right_block volume separator.clock clock separator.battery battery \
+sketchybar --add bracket right_block volume separator.battery battery separator.clock clock \
            --set right_block background.drawing=off \
                              background.height=34 \
                              background.corner_radius=0 \

@@ -7,6 +7,7 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "soft_wrap": "editor_width",
   "agent_servers": {
     "codex-acp": {
       "default_config_options": {
@@ -18,7 +19,7 @@
   },
   "toolbar": {
     "breadcrumbs": true,
-    "quick_actions": false,
+    "quick_actions": true,
     "selections_menu": false,
   },
   "vim_mode": true,
@@ -60,5 +61,21 @@
   "relative_line_numbers": "enabled",
   "scrollbar": {
     "show": "never",
+  },
+  "lsp": {
+    "spyglassmc": {
+      "binary": {
+        "path": "spyglassmc-language-server",
+        "arguments": ["--stdio"],
+      },
+    },
+  },
+  "file_types": {
+    "mcfunction": ["mcfunction"],
+  },
+  "languages": {
+    "mcfunction": {
+      "language_servers": ["spyglassmc"],
+    },
   },
 }
