@@ -20,7 +20,7 @@ bars:
       enabled: false
       round_corners: true
     window_flags:
-      always_on_top: true
+      always_on_top: false
       windows_app_bar: true
     dimensions:
       width: 100%
